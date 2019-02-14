@@ -14,7 +14,7 @@ steps:
 - script:  echo Add other
   displayName: 'Run a one-line script'
 
-- task: PowerShell
+- task: PowerShell@1
   displayName: 'PowerShell Script'
   inputs:
     scriptName: shell.sh
