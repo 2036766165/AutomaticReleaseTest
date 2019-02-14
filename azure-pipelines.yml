@@ -8,18 +8,17 @@ trigger:
 
 pool:
   vmImage: 'Ubuntu-16.04'
-  
-variables:
-  buildConfiguration: 'Debug'
+
 
 steps:
-- script:  dotnet build --configuration $(buildConfiguration)
-
+- script:  echo Add other
   displayName: 'Run a one-line script'
-- task: PowerShell@1
+
+- task: PowerShell
   displayName: 'PowerShell Script'
   inputs:
     scriptName: shell.sh
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
