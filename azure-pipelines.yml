@@ -7,113 +7,117 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'macOS-10.14'
+
+variables:
+  buildConfiguration: 'Debug'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script:  dotnet build --configuration $(buildConfiguration)
   #使用方法
-  if [ ! -d ./IPADir ];
-  then
-  mkdir -p IPADir;
-  fi
+  # if [ ! -d ./IPADir ]
+  # then
+  # mkdir -p IPADir;
+  # fi
 
   #工程绝对路径
-  project_path=$(cd `dirname $0`; pwd)
+  # project_path=$(cd `dirname $0`; pwd)
 
-  #工程名 将XXX替换成自己的工程名
-  project_name=AutomaticReleaseTest
+  # #工程名 将XXX替换成自己的工程名
+  # project_name=AutomaticReleaseTest
 
-  #scheme名 将XXX替换成自己的sheme名
-  scheme_name=AutomaticReleaseTest
+  # #scheme名 将XXX替换成自己的sheme名
+  # scheme_name=AutomaticReleaseTest
 
-  #打包模式 Debug/Release
-  development_mode=Debug
+  # #打包模式 Debug/Release
+  # development_mode=Debug
 
-  #build文件夹路径
-  build_path=${project_path}/build
+  # #build文件夹路径
+  # build_path=${project_path}/build
 
-  #plist文件所在路径
-  exportOptionsPlistPath=${project_path}/exportTest.plist
+  # #plist文件所在路径
+  # exportOptionsPlistPath=${project_path}/exportTest.plist
 
-  #导出.ipa文件所在路径
-  exportIpaPath=${project_path}/IPADir/${development_mode}
+  # #导出.ipa文件所在路径
+  # exportIpaPath=${project_path}/IPADir/${development_mode}
 
-  development_mode=Debug
-  exportOptionsPlistPath=${project_path}/exportTest.plist
+  # development_mode=Debug
+  # exportOptionsPlistPath=${project_path}/exportTest.plist
 
-  echo '///-----------'
-  echo '/// 正在清理工程'
-  echo '///-----------'
+  # echo '///-----------'
+  # echo '/// 正在清理工程'
+  # echo '///-----------'
 
-  xcodebuild \
-  clean -configuration ${development_mode} -quiet  || exit
+  # xcodebuild \
+  # clean -configuration ${development_mode} -quiet  || exit
 
 
-  echo '///--------'
-  echo '/// 清理完成'
-  echo '///--------'
-  echo ''
+  # echo '///--------'
+  # echo '/// 清理完成'
+  # echo '///--------'
+  # echo ''
 
-  echo '///-----------'
-  echo '/// 正在编译工程:'${development_mode}
-  echo '///-----------'
-  xcodebuild \
-  archive -workspace ${project_path}/${project_name}.xcworkspace \
-  -scheme ${scheme_name} \
-  -configuration ${development_mode} \
-  -archivePath ${build_path}/${project_name}.xcarchive  -quiet  || exit
+  # echo '///-----------'
+  # echo '/// 正在编译工程:'${development_mode}
+  # echo '///-----------'
+  # xcodebuild \
+  # archive -workspace ${project_path}/${project_name}.xcworkspace \
+  # -scheme ${scheme_name} \
+  # -configuration ${development_mode} \
+  # -archivePath ${build_path}/${project_name}.xcarchive  -quiet  || exit
 
-  echo '///--------'
-  echo '/// 编译完成'
-  echo '///--------'
-  echo ''
+  # echo '///--------'
+  # echo '/// 编译完成'
+  # echo '///--------'
+  # echo ''
 
-  echo '///----------'
-  echo '/// 开始ipa打包'
-  echo '///----------'
-  xcodebuild -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
-  -configuration ${development_mode} \
-  -exportPath ${exportIpaPath} \
-  -exportOptionsPlist ${exportOptionsPlistPath} \
-  -quiet || exit
+  # echo '///----------'
+  # echo '/// 开始ipa打包'
+  # echo '///----------'
+  # xcodebuild -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
+  # -configuration ${development_mode} \
+  # -exportPath ${exportIpaPath} \
+  # -exportOptionsPlist ${exportOptionsPlistPath} \
+  # -quiet || exit
 
-  if [ -e $exportIpaPath/$scheme_name.ipa ]; then
-  echo '///----------'
-  echo '/// ipa包已导出'
-  echo '///----------'
-  open $exportIpaPath
-  else
-  echo '///-------------'
-  echo '/// ipa包导出失败 '
-  echo '///-------------'
-  fi
-  echo '///------------'
-  echo '/// 打包ipa完成  '
-  echo '///-----------='
-  echo ''
+  # if [ -e $exportIpaPath/$scheme_name.ipa ]; then
+  # echo '///----------'
+  # echo '/// ipa包已导出'
+  # echo '///----------'
+  # open $exportIpaPath
+  # else
+  # echo '///-------------'
+  # echo '/// ipa包导出失败 '
+  # echo '///-------------'
+  # fi
+  # echo '///------------'
+  # echo '/// 打包ipa完成  '
+  # echo '///-----------='
+  # echo ''
 
-  echo '///-------------'
-  echo '/// 开始发布ipa包 '
-  echo '///-------------'
+  # echo '///-------------'
+  # echo '/// 开始发布ipa包 '
+  # echo '///-------------'
 
-  echo "~~~~~~~~~~~~~~~~上传ipa到蒲公英~~~~~~~~~~~~~~~~~~~"
-  curl -F "file=@${exportIpaPath}/${scheme_name}.ipa" \
-  -F "_api_key=f56a1f301e496b3a434aeb0f594cbaa9" \
-  https://www.pgyer.com/apiv2/app/upload
-  if [ $? = 0 ]
-  then
-  echo -e "\n"
-  echo "~~~~~~~~~~~~~~~~上传蒲公英成功~~~~~~~~~~~~~~~~~~~"
-  rm -rf build
-  rm -rf IPADir
-  else
-  echo -e "\n"
-  echo "~~~~~~~~~~~~~~~~上传蒲公英失败~~~~~~~~~~~~~~~~~~~"
-  rm -rf build
-  rm -rf IPADir
-  fi
-  exit 0
+  # echo "~~~~~~~~~~~~~~~~上传ipa到蒲公英~~~~~~~~~~~~~~~~~~~"
+  # curl -F "file=@${exportIpaPath}/${scheme_name}.ipa" \
+  # -F "_api_key=f56a1f301e496b3a434aeb0f594cbaa9" \
+  # https://www.pgyer.com/apiv2/app/upload
+  # if [ $? = 0 ]
+  # then
+  # echo -e "\n"
+  # echo "~~~~~~~~~~~~~~~~上传蒲公英成功~~~~~~~~~~~~~~~~~~~"
+  # rm -rf build
+  # rm -rf IPADir
+  # else
+  # echo -e "\n"
+  # echo "~~~~~~~~~~~~~~~~上传蒲公英失败~~~~~~~~~~~~~~~~~~~"
+  # rm -rf build
+  # rm -rf IPADir
+  # fi
+  # exit 0
+  displayName: 'Run a one-line script'
+  
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
