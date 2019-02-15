@@ -29,20 +29,20 @@ steps:
     certSecureFile: 'dis.p12'
     certPwd: $(1234)
 
-# - task: InstallAppleCertificate@1
-#   inputs:
-#     certSecureFile: 'dev.p12'
-#     certPwd: $(1234)
+- task: InstallAppleCertificate@1
+  inputs:
+    certSecureFile: 'dev.p12'
+    certPwd: $(1234)
 
-# - task: InstallAppleCertificate@2
-#   inputs:
-#     certSecureFile: 'dis_push.p12'
-#     certPwd: $(1234)
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'dis_push.p12'
+    certPwd: $(1234)
 
-# - task: InstallAppleCertificate@3
-#   inputs:
-#     certSecureFile: 'dev_push.p12'
-#     certPwd: $(1234)
+- task: InstallAppleCertificate@3
+  inputs:
+    certSecureFile: 'dev_push.p12'
+    certPwd: $(1234)
 
 - task: InstallAppleProvisioningProfile@1
   inputs:
