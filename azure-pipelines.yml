@@ -59,18 +59,18 @@ steps:
     signingOption: 'default' # Options: nosign, default, manual, auto
     useXcpretty: 'false' # Makes it easier to diagnose build failures
    
-# - task: CopyFiles@2
-#   inputs:
-#     contents: '**/*.ipa'
-#     targetFolder: '$(build.artifactStagingDirectory)'
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.ipa'
+    targetFolder: '$(build.artifactStagingDirectory)'
 
-# - task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
 
-# - task: AppStoreRelease@1
-#   displayName: 'Publish to the App Store TestFlight track'
-#   inputs:
-#     serviceEndpoint: 'My Apple App Store service connection' # This service connection must be added by you
-#     appIdentifier: com.yourorganization.testapplication.etc
-#     ipaPath: '$(build.artifactstagingdirectory)/**/*.ipa'
-#     shouldSkipWaitingForProcessing: true
-#     shouldSkipSubmission: true
+- task: AppStoreRelease@1
+  displayName: 'Publish to the App Store TestFlight track'
+  inputs:
+    serviceEndpoint: 'My Apple App Store service connection' # This service connection must be added by you
+    appIdentifier: com.yourorganization.testapplication.etc
+    ipaPath: '$(build.artifactstagingdirectory)/**/*.ipa'
+    shouldSkipWaitingForProcessing: true
+    shouldSkipSubmission: true
